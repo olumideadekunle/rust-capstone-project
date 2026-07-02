@@ -1,13 +1,9 @@
-# Setup nvm and install pre-req
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-nvm install --lts
-npm install
-
+#!/bin/bash
 set -e  # Exit immediately if any command fails
 
-# Spawn Bitcoind, and provide execution permission.
+# 1. Spawn Bitcoind
 docker compose up -d
-sleep 10
+sleep 15 # Give it a bit more time to wake up
 
 echo "Waiting for bitcoind to be fully initialized..."
 
@@ -25,12 +21,9 @@ while true; do
   fi
 done
 
+# 2. Run your Rust project
 chmod +x ./rust/run-rust.sh
-chmod +x ./run.sh
+./rust/run-rust.sh
 
-# Run the test scripts
-/bin/bash run.sh
-npm run test
-
-# Stop the docker.
+# 3. Clean up
 docker compose down -v

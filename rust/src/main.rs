@@ -41,7 +41,8 @@ fn main() -> bitcoincore_rpc::Result<()> {
     let hashes = miner_rpc.generate_to_address(1, &miner_addr)?;
     let block = miner_rpc.get_block_info(&hashes[0])?;
 
-    let mut file = File::create("../out.txt").expect("Could not create out.txt");
+    // 4. Create the output file in the current directory
+    let mut file = File::create("out.txt").expect("Could not create out.txt");
     writeln!(file, "{}", txid)?;
     writeln!(file, "{}", miner_addr)?;
     writeln!(file, "50")?;
